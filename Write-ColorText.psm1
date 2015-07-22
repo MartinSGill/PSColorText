@@ -1,87 +1,94 @@
-﻿function Write-ColorText
+﻿#requires -Version 2
+function Write-ColorText
 {
     <#
-        .SYNOPSIS
-        Writes text to the console using tags in the string itself
-        to indicate the output color of the text. Can replace
-        Write-Host cmdlet.
+            .SYNOPSIS
+            Writes text to the console using tags in the string itself
+            to indicate the output color of the text. Can replace
+            Write-Host cmdlet.
 
-        MIT License
-        Copyright © 2014-2015, Martin Gill. All Rights Reserved.
+            MIT License
+            Copyright © 2014-2015, Martin Gill. All Rights Reserved.
 
-        .DESCRIPTION
-        This script allows you to use custom markup to more easily
-        write multi-colored text to the console. Can replace
-        Write-Host cmdlet.
+            .DESCRIPTION
+            This script allows you to use custom markup to more easily
+            write multi-colored text to the console. Can replace
+            Write-Host cmdlet.
 
-        It uses the general format of:
+            It uses the general format of:
         
-        !(foreground,background) 
+            !(foreground,background) 
       
-        to define a color setting.
+            to define a color setting.
 
-        both background and foreground can be omitted, but the comma
-        is required if you specify a background color.
-        The following are all valid:
+            both background and foreground can be omitted, but the comma
+            is required if you specify a background color.
+            The following are all valid:
 
-        !(red)
-        !(,red)
-        !(blue,)
-        !(yellow,black)
+            !(red)
+            !(,red)
+            !(blue,)
+            !(yellow,black)
 
-        If you don't specify a color it will continue using the current
-        color. If you specify "*" as a color it will revert to the default
-        color.
+            If you don't specify a color it will continue using the current
+            color. If you specify "*" as a color it will revert to the default
+            color.
 
-        You can escape the markup using an additional '!':
+            You can escape the markup using an additional '!':
 
-        !!(red)
+            !!(red)
 
-        .PARAMETER String
-        The string to write out.
+            .PARAMETER String
+            The string to write out.
 
-        .PARAMETER NoColor
-        Disable color output.
+            .PARAMETER NoColor
+            Disable color output.
 
-        .PARAMETER NoNewLine
-        Do not append a newline after writing out text.
+            .PARAMETER NoNewLine
+            Do not append a newline after writing out text.
 
-        .EXAMPLE
-        PS C:\> Write-ColorText "This is a test !(gray)[ !(red)fail!(gray) ]"
+            .PARAMETER ForegroundColor
+            Initial Foreground color.
 
-        .EXAMPLE
-        PS C:\> Write-ColorText "This is a test !(gray)[!(black,green) fail !(gray,*)]"
+            .PARAMETER BackgroundColor
+            Initial Background color.
 
-        .INPUTS
-        System.String
+            .EXAMPLE
+            PS C:\> Write-ColorText "This is a test !(gray)[ !(red)fail!(gray) ]"
 
-        .OUTPUTS
-        None
+            .EXAMPLE
+            PS C:\> Write-ColorText "This is a test !(gray)[!(black,green) fail !(gray,*)]"
 
-        .NOTES
-        LICENSE
+            .INPUTS
+            System.String
 
-        The MIT License (MIT)
+            .OUTPUTS
+            None
 
-        Copyright (c) 2014-2015, Martin Gill. All Rights Reserved.
+            .NOTES
+            LICENSE
 
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is
-        furnished to do so, subject to the following conditions:
+            The MIT License (MIT)
 
-        The above copyright notice and this permission notice shall be included in
-        all copies or substantial portions of the Software.
+            Copyright (c) 2014-2015, Martin Gill. All Rights Reserved.
 
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-        THE SOFTWARE.
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:
+
+            The above copyright notice and this permission notice shall be included in
+            all copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+            THE SOFTWARE.
     #>
 
     [CmdletBinding()]
@@ -89,6 +96,12 @@
         [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
         [System.String]
         $String,
+
+        [ConsoleColor]
+        $ForegroundColor,
+
+        [ConsoleColor]
+        $BackgroundColor,
 
         [switch]
         $NoNewline,
@@ -117,7 +130,6 @@
                     $errorString += (' ' * $match.Index) + ('~' * $match.Length)
                     throw $errorString
                 }
-
 
                 $success = $script:colors.Contains($background) -or $background -eq '*' -or $background -eq [string]::Empty
                 if (!$success)
@@ -179,8 +191,23 @@
     {
         try 
         {
-            $script:currentForeground = $script:initialForeground
-            $script:currentBackground = $script:initialBackground
+            if ($ForegroundColor)
+            {
+                $script:currentForeground = $ForegroundColor
+            }
+            else
+            {
+                $script:currentForeground = $script:initialForeground
+            }
+
+            if ($BackgroundColor)
+            {
+                $script:currentBackground = $BackgroundColor
+            }
+            else
+            {
+                $script:currentBackground = $script:initialBackground
+            }
 
             Test-Values
 

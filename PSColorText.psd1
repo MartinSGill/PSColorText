@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '1.0'
+ModuleVersion = '1.1'
 
 # ID used to uniquely identify this module
 GUID = '4e5da911-3cc6-4d3e-ad57-52ca5410db94'
@@ -30,7 +30,7 @@ Copyright = '(c) 2014-2015 Martin Gill. All rights reserved.'
 Description = 'Provides a simpler way of writing colored text to the host.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '2'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
