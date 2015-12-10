@@ -119,8 +119,8 @@ function Write-ColorText
             # do some validation
             foreach ($match in $matches)
             {
-                $foreground = $match.Groups['foreground'].Value
-                $background = $match.Groups['background'].Value
+                $foreground = $match.Groups['foreground'].Value.ToLower()
+                $background = $match.Groups['background'].Value.ToLower()
 
                 $success = $script:colors.Contains($foreground) -or $foreground -eq '*' -or $foreground -eq [string]::Empty
                 if (!$success)

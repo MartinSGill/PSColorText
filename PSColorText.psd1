@@ -30,7 +30,7 @@ Copyright = '(c) 2014-2015 Martin Gill. All rights reserved.'
 Description = 'Provides a simpler way of writing colored text to the host.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '2'
+PowerShellVersion = '3.0'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -63,10 +63,10 @@ PowerShellVersion = '2'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('Write-ColorText.psm1')
+NestedModules = @('Write-ColorText.psm1','Write-ColorLine.psm1')
 
 # Functions to export from this module
-FunctionsToExport = 'Write-ColorText'
+FunctionsToExport = @('Write-ColorText', 'Write-ColorLine', 'New-ColorLineItem')
 
 # Cmdlets to export from this module
 # CmdletsToExport = '*'
