@@ -9,10 +9,10 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-# RootModule = ''
+RootModule = 'PSColorText.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1'
+ModuleVersion = '1.2'
 
 # ID used to uniquely identify this module
 GUID = '4e5da911-3cc6-4d3e-ad57-52ca5410db94'
@@ -24,7 +24,7 @@ Author = 'Martin Gill'
 CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c) 2014-2015 Martin Gill. All rights reserved.'
+Copyright = '(c) 2014-2016 Martin Gill. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Provides a simpler way of writing colored text to the host.'
@@ -63,10 +63,10 @@ PowerShellVersion = '3.0'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('Write-ColorText.psm1','Write-ColorLine.psm1')
+# NestedModules = @()
 
 # Functions to export from this module
-FunctionsToExport = @('Write-ColorText', 'Write-ColorLine', 'New-ColorLineItem')
+FunctionsToExport = @('*-*')
 
 # Cmdlets to export from this module
 # CmdletsToExport = '*'

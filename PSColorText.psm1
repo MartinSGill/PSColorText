@@ -1,4 +1,5 @@
-﻿#requires -Version 2
+﻿#requires -Version 3
+
 function Write-ColorText
 {
     <#
@@ -6,9 +7,6 @@ function Write-ColorText
             Writes text to the console using tags in the string itself
             to indicate the output color of the text. Can replace
             Write-Host cmdlet.
-
-            MIT License
-            Copyright © 2014-2015, Martin Gill. All Rights Reserved.
 
             .DESCRIPTION
             This script allows you to use custom markup to more easily
@@ -64,31 +62,6 @@ function Write-ColorText
 
             .OUTPUTS
             None
-
-            .NOTES
-            LICENSE
-
-            The MIT License (MIT)
-
-            Copyright (c) 2014-2015, Martin Gill. All Rights Reserved.
-
-            Permission is hereby granted, free of charge, to any person obtaining a copy
-            of this software and associated documentation files (the "Software"), to deal
-            in the Software without restriction, including without limitation the rights
-            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-            copies of the Software, and to permit persons to whom the Software is
-            furnished to do so, subject to the following conditions:
-
-            The above copyright notice and this permission notice shall be included in
-            all copies or substantial portions of the Software.
-
-            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-            THE SOFTWARE.
     #>
 
     [CmdletBinding()]
@@ -279,3 +252,78 @@ function Write-ColorText
     }
 }
 
+Function Write-ColorLine
+{
+    <#
+    .SYNOPSIS
+        Utility to assemble a single line of colored text
+        from component items.
+    .DESCRIPTION
+        Long description
+    .EXAMPLE
+    .INPUTS
+        ColorLine Item(s)
+        cf. New-ColorLineItem
+    .OUTPUTS
+    .NOTES
+        A "powerline compatible" font is required to really
+        benefit from this function.
+    #>
+    Param(
+        [Parameter(Mandatory=$true)]
+        [psobject[]]$items,
+        [ConsoleColor]$defaultBackgroundColor = 'black',
+        [Switch]$NoNewLine
+    )
+        
+    $sym = ''
+    $back = $defaultBackgroundColor
+        
+    foreach ($item in $items)
+    {
+        $fore = $back
+        $back = $item.bg
+        Write-ColorText "!($fore,$back)$sym" -NoNewLine
+        $fore = $item.fg
+        $back = $item.bg
+        Write-ColorText ("!($fore,$back)" + $item.text) -NoNewline
+    }
+    Write-ColorText "!($back,$defaultBackgroundColor)$sym" -NoNewLine:$NoNewLine
+}
+
+Function New-ColorLineItem
+{
+    <#
+    .SYNOPSIS
+        Utility to create a ColorLineItem custom object. 
+    .DESCRIPTION
+        Easily create a color line obkect.
+        These objects have the structure
+        @{ bg, fg, text }
+        where bg is the background color
+        fg is the foreground color
+        and text is the display text.
+    .EXAMPLE
+        C:\PS> <example usage>
+        Explanation of what the example does
+    .INPUTS
+    .OUTPUTS
+        PsCustomObject
+    #>
+    Param(
+        [Parameter(Mandatory=$true)]
+        [Alias('fg')]
+        [ConsoleColor]$ForegroundColor,
+            
+        [Parameter(Mandatory=$true)]
+        [Alias('bg')]
+        [ConsoleColor]$BackgroundColor,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$Text
+    )
+        
+    [PSCustomObject]@{fg = $ForegroundColor; bg = $BackgroundColor; text = $text};
+}
+
+Export-ModuleMember Write-ColorText, Write-ColorLine, New-ColorLineItem
