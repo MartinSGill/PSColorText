@@ -273,22 +273,22 @@ Function Write-ColorLine
         [Parameter(Mandatory=$true)]
         [psobject[]]$items,
         [ConsoleColor]$defaultBackgroundColor = 'black',
+        [String]$symbol =  '',
         [Switch]$NoNewLine
     )
         
-    $sym = ''
     $back = $defaultBackgroundColor
         
     foreach ($item in $items)
     {
         $fore = $back
         $back = $item.bg
-        Write-ColorText "!($fore,$back)$sym" -NoNewLine
+        Write-ColorText "!($fore,$back)$symbol" -NoNewLine
         $fore = $item.fg
         $back = $item.bg
         Write-ColorText ("!($fore,$back)" + $item.text) -NoNewline
     }
-    Write-ColorText "!($back,$defaultBackgroundColor)$sym" -NoNewLine:$NoNewLine
+    Write-ColorText "!($back,$defaultBackgroundColor)$symbol" -NoNewLine:$NoNewLine
 }
 
 Function New-ColorLineItem
