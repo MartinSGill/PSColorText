@@ -12,7 +12,7 @@
 RootModule = 'PSColorText.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.1'
+ModuleVersion = '1.3.0'
 
 # ID used to uniquely identify this module
 GUID = '4e5da911-3cc6-4d3e-ad57-52ca5410db94'
